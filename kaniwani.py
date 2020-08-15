@@ -21,6 +21,10 @@ message_options_on_wrong = """ Options are:
 -\tmark as wrong 
 0\treveal answer"""
 
+if_word_is_roman_character_based = "in english"
+
+if_word_is_not_roman_character_based = "in ひらがな"
+
 message_help = """
 Welcome to kaniwani!
 
@@ -98,7 +102,10 @@ for i in range(0,len(words)):
     #print("{0} out of {1}".format(i+1, len(words)))
     advance = False
     while not advance:
-        user_answer = input(words[i][0]+": ")
+        if re.match('^[a-zA-Z]+$',words[i][1]):
+            user_answer = input(words[i][0]+" {0}: ".format(if_word_is_roman_character_based))
+        else: 
+            user_answer = input(words[i][0]+" {0}: ".format(if_word_is_not_roman_character_based))
         if user_answer == "": #skip a word by just not typing it
             if skip_enabled:
                 advance = True
