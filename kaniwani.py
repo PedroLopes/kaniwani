@@ -107,7 +107,6 @@ for i in range(0,len(words)):
     #print("{0} out of {1}".format(i+1, len(words)))
     advance = False
     while not advance:
-        print(words[i][1])
         if re.match('^[a-zA-Z\s]+$',words[i][1]):
         #if re.match('\w',words[i][1]):
             user_answer = input(words[i][0]+" {0}: ".format(if_word_is_roman_character_based))
