@@ -11,7 +11,6 @@ skip_enabled = False
 produce_output_file_of_mistakes = True
 random_order = True
 
-
 # messages for each event
 message_correct = "Correct!"
 
@@ -110,7 +109,7 @@ for i in range(0,len(words)):
     #print("{0} out of {1}".format(i+1, len(words)))
     advance = False
     while not advance:
-        if re.match('^[a-zA-Z\s./-]+$',words[i][1][1]): #check first meaning only
+        if re.match('^[a-zA-Z\s./-]+$',words[i][1][0]): #check first meaning only
             user_answer = input(words[i][0]+" {0}: ".format(if_word_is_roman_character_based))
         else: 
             user_answer = input(words[i][0]+" {0}: ".format(if_word_is_not_roman_character_based))
