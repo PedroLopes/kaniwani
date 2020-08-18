@@ -95,7 +95,10 @@ words = []
 with open(filename) as csv_file:
     for row in csv_file:
         row = re.split(',|、', row)
-        words.append([row[0].rstrip(),row[1].rstrip(),0]) #0 1 -1 
+        meanings = []
+        for w in row[1:]:
+            meanings.append(w.strip())
+        words.append([row[0],meanings,0]) #0 1 -1 
     print("{0} words loaded from {1}".format(len(words),filename))
 print("==== Start ====")
 
@@ -107,8 +110,7 @@ for i in range(0,len(words)):
     #print("{0} out of {1}".format(i+1, len(words)))
     advance = False
     while not advance:
-        if re.match('^[a-zA-Z\s./-]+$',words[i][1]):
-        #if re.match('\w',words[i][1]):
+        if re.match('^[a-zA-Z\s./-]+$',words[i][1][1]): #check first meaning only
             user_answer = input(words[i][0]+" {0}: ".format(if_word_is_roman_character_based))
         else: 
             user_answer = input(words[i][0]+" {0}: ".format(if_word_is_not_roman_character_based))
@@ -117,32 +119,35 @@ for i in range(0,len(words)):
                 advance = True
             else:
                 advance = False
-        elif user_answer == words[i][1]:
-            if not silence_correct_answers:
-                print(message_correct)
-            words[i][2]=1 #set as correct
-            advance = True
         else:
-            if not silence_wrong_answers:
-                print(message_wrong, end = '')
-            if allow_for_cheating:
-                print(message_options_on_wrong)
-                option = input("option: ")
-                if option == "+" or option == "＋":
+            for meaning in words[i][1]:
+                if user_answer == meaning:
+                    if not silence_correct_answers:
+                        print(message_correct)
                     words[i][2]=1 #set as correct
                     advance = True
-                elif option == "-" or option == "ー":
-                    words[i][2]=-1 #set as wrong
-                    advance = True
-                elif option == "0" or option == "０":
-                    print(words[i][1])
-                    advance = False
-                else:
-                    #retry without increments
-                    advance = False
+                    break
             else:
-                print()
-                words[i][2]=-1 #set as wrong
+                if not silence_wrong_answers:
+                    print(message_wrong, end = '')
+                if allow_for_cheating:
+                    print(message_options_on_wrong)
+                    option = input("option: ")
+                    if option == "+" or option == "＋":
+                        words[i][2]=1 #set as correct
+                        advance = True
+                    elif option == "-" or option == "ー":
+                        words[i][2]=-1 #set as wrong
+                        advance = True
+                    elif option == "0" or option == "０":
+                        print(words[i][1])
+                        advance = False
+                    else:
+                        #retry without increments
+                        advance = False
+                else:
+                    print()
+                    words[i][2]=-1 #set as wrong
 
 # print stats at the end
 typos = 0
