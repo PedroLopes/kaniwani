@@ -11,7 +11,6 @@ Open your terminal and assuming you have python3 installed, type:
 
 (in the directory where you have ``kaniwany.py`` and our example file with words ``words.csv``)
 
-
 ## Making a file of words 
 The file is quite simple, it is a comma-separated value (csv). It is a simple file with two words per line, each separated by a comma. For example, here's a valid file which we have included and called ``test.csv``:
 
@@ -21,7 +20,31 @@ The file is quite simple, it is a comma-separated value (csv). It is a simple fi
 ``
 Note the file can use the separator , or 、(japanese).
 
-## Invoking this program
+Each line represents a word that will be asked to the user. For example `木` in the first line of the example above is the word that the user is trying to guess its meaning. The words in the same line, which are separated by commas and come right after `木` are its meanings. In this case `もく`. The user is not shown `もく` and tries to guess it by writing it when the program prompts the meaning of 木`. 
+
+### japanese or english meanings
+
+This program accepts "meaning" words in both japanese or english. 
+
+``
+木、もく
+木、tree
+``
+Is a valid program. In fact, ``kaniwani`` will check the writing language used in the meaning word and will prompt the user accordingly:
+
+1. ``木 in japanese: <prompts user for input here>`` (for the first line)
+2. ``木 in english: <prompts user for input here>`` (for the second line)   
+
+### multiple meanings
+
+Furthermore, you can add multiple meanings too, as long as they follow on the same line of the word and just are added each in their own entry (i.e., comma separated). For example, the ``words.csv`` file that we include as a demo for this program has multiple meanings on all lines:
+
+```
+名前、na'me of a thing.m, a, a b 
+名前、まえ、ぜん
+```
+
+## Options to invoke this program
 On command line:
 
 ``python3 kaniwany.py``
@@ -36,11 +59,13 @@ Will start the program with this text.
 
 This will start and load ``words.csv`` file. Replace ``words.csv`` with whatever file you want to load, keeping in mind the correct instructions on how to format your file.
 
-## Special options
-You can simply configure the options by changing the values
-in the ``kaniwani.py`` file. 
-
 ## Producing output files 
-If you want to productively study, you can set the option that ``produce_output_file_of_mistakes = True`` With this option set, at the end of each session the program will produce a file called typos.csv, which all the ones you got wrong. This way you can simply run the program again and choosing ``typos.csv`` as the input set of words. Keep working on it until
-you have no typos left.
+If you want to productively study a particular set of words, you should keep track of the mistakes you made in a session. To assist you with that, this program produces a file called ``<date>typos.csv`` with the mistakes you made in your session. You can simply load this file when you invoke the program and keep iterating until you have no mistakes left. 
+
+This option, like many other options, can be disabled directly in the source code by changing
+``produce_output_file_of_mistakes = True`` to ``=False``. Refer to the section below for more details. 
+
+## Special options
+You can simply configure the options by changing the values in the ``kaniwani.py`` file directly. In the first lines of code, there's a series of ``Booleans`` that allow you to set options like disable random order, etc. Refer to actual source code for all the options.
+
 
