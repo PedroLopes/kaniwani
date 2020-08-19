@@ -109,7 +109,7 @@ for i in range(0,len(words)):
     #print("{0} out of {1}".format(i+1, len(words)))
     advance = False
     while not advance:
-        if re.match('^[a-zA-Z\s./-]+$',words[i][1][0]): #check first meaning only
+        if re.match("^[a-zA-Z\s./-/']+$",words[i][1][0]): #check first meaning only
             user_answer = input(words[i][0]+" {0}: ".format(if_word_is_roman_character_based))
         else: 
             user_answer = input(words[i][0]+" {0}: ".format(if_word_is_not_roman_character_based))
@@ -164,7 +164,12 @@ if typos >= 1:
         if word[2] == -1:
             print(typos, end = ': ')
             typos+=1
-            print("{0} is {1}".format(word[0], word[1]))
+            print("{0} is ".format(word[0]), end = '')
+            for idx, meaning in enumerate(word[1]):
+                print("{1}".format(word[0], meaning), end = '')
+                if idx != len(word[1])-1:
+                    print(", ", end = '')
+            print()
             if produce_output_file_of_mistakes:
                 print("{0},{1}".format(word[0], word[1]),file=typosfile)
     typosfile.close()
