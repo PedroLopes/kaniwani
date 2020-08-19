@@ -20,7 +20,8 @@ message_options_on_wrong = """ Options are:
 [enter]\tretry
 +\tmark as correct
 -\tmark as wrong 
-0\treveal answer"""
+0\treveal answer
+x\texit"""
 
 if_word_is_roman_character_based = "in english"
 
@@ -104,9 +105,13 @@ print("==== Start ====")
 if random_order:
     random.shuffle(words)
 
+exit = False
 # ask each word once
 for i in range(0,len(words)):
     #print("{0} out of {1}".format(i+1, len(words)))
+    if exit:
+        print("STOP")
+        break
     advance = False
     while not advance:
         if re.match("^[a-zA-Z\s./-/']+$",words[i][1][0]): #check first meaning only
@@ -130,7 +135,11 @@ for i in range(0,len(words)):
                 if not silence_wrong_answers:
                     print(message_wrong, end = '')
                 if allow_for_cheating:
-                    print(message_options_on_wrong)
+                    print(message_options_on_wrong, end = '')
+                    if produce_output_file_of_mistakes:
+                        print(" (will save progress in {0}_typos.csv file".format(datetime.today().strftime('%Y-%m-%d')))
+                    else:
+                        print()
                     option = input("option: ")
                     if option == "+" or option == "＋":
                         words[i][2]=1 #set as correct
@@ -141,6 +150,10 @@ for i in range(0,len(words)):
                     elif option == "0" or option == "０":
                         print(words[i][1])
                         advance = False
+                    elif option =="x":
+                        advance = True
+                        exit = True
+                        break
                     else:
                         #retry without increments
                         advance = False
@@ -159,11 +172,11 @@ for i, word in enumerate(words):
         typos+=1
 if typos >= 1:
     print("==== {0} Mistake(s) ====".format(typos))
-    typos = 1
+    typos_idx = 1
     for i, word in enumerate(words):
         if word[2] == -1:
-            print(typos, end = ': ')
-            typos+=1
+            print(typos_idx, end = ': ')
+            typos_idx+=1
             print("{0} is ".format(word[0]), end = '')
             for idx, meaning in enumerate(word[1]):
                 print("{1}".format(word[0], meaning), end = '')
@@ -173,5 +186,6 @@ if typos >= 1:
             if produce_output_file_of_mistakes:
                 print("{0},{1}".format(word[0], word[1]),file=typosfile)
     typosfile.close()
+    print("{0} Mistake(s) saved to {1} \n(hint: you can load the program with that file to iteratively finish your study of this set)".format(typos, typos_filename))
 else:
     print("==== Perfect! ====")
