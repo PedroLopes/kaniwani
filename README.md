@@ -68,4 +68,10 @@ This option, like many other options, can be disabled directly in the source cod
 ## Special options
 You can simply configure the options by changing the values in the ``kaniwani.py`` file directly. In the first lines of code, there's a series of ``Booleans`` that allow you to set options like disable random order, etc. Refer to actual source code for all the options.
 
+## If you are using VI to edit your files
+
+This section is maybe only for me, but perhaps you are also studying using this program and using ``vi``? If so, here's a few useful tips:
+
+1. to duplicate every line of text (useful when editing the .csv files to create the translations/meanings) you can use ``:g/^/norm yyp``
+2. to center your text in a big screen/etc (useful whe looking at or editing the csv in vi) you can, from a visual selection (``V``and select), run ``:center``
 

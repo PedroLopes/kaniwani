@@ -50,6 +50,7 @@ For example, here's a valid file
 外人,がいじん
 ------------- end of file ---------------
 Note the file can use the separator , or 、(japanese).
+You can add comments by starting a line with # or ＃.
 
 == Invoking this program ==
 On command line:
@@ -94,6 +95,8 @@ else:
 words = []
 with open(filename) as csv_file:
     for row in csv_file:
+        if row[0] == '#' or row[0] == '＃':
+            continue #jumps over comments
         row = re.split(',|、', row)
         meanings = []
         for w in row[1:]:
