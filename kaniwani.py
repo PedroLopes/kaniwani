@@ -28,8 +28,8 @@ j\tsearch in jisho.org
 x\texit"""
 
 if_word_is_roman_character_based = "in english"
-
 if_word_is_not_roman_character_based = "in ひらがな"
+if_word_is_empty_draw_its_kanji = "in 漢字 (write down, then press any key to self-assess answer or type correct using keyboard after you wrote it down)"
 
 message_help = """
 Welcome to kaniwani!
@@ -115,18 +115,26 @@ if random_order:
 exit = False
 # ask each word once
 for i in range(0,len(words)):
-    #print("{0} out of {1}".format(i+1, len(words)))
+    # print("{0} out of {1}".format(i+1, len(words)))
     if exit:
         print("STOP")
         break
     advance = False
     while not advance:
-        if re.match("^[a-zA-Z\s./-/']+$",words[i][1][0]): #check first meaning only
-            print("first") 
-            user_answer = input(words[i][0]+" {0}: ".format(if_word_is_roman_character_based))
-        else: 
-            print("second") 
-            user_answer = input(words[i][0]+" {0}: ".format(if_word_is_not_roman_character_based))
+
+        if words[i][1][0] == '': 
+            # print("empty for kanji!")
+            user_answer = input(words[i][0]+" {0}: ".format(if_word_is_empty_draw_its_kanji))
+        
+        else:
+
+            if re.match("^[a-zA-Z\s./-/']+$",words[i][1][0]): #check first meaning only
+                # in english 
+                user_answer = input(words[i][0]+" {0}: ".format(if_word_is_roman_character_based))
+            else: 
+                # in japanese
+                user_answer = input(words[i][0]+" {0}: ".format(if_word_is_not_roman_character_based))
+        
         if user_answer == "": #skip a word by just not typing it
             if skip_enabled:
                 advance = True
