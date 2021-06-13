@@ -2,6 +2,8 @@ import sys
 import re
 import random
 from datetime import datetime
+import urllib.parse
+import webbrowser
 
 # options
 silence_correct_answers = True
@@ -10,6 +12,7 @@ allow_for_cheating = True
 skip_enabled = False
 produce_output_file_of_mistakes = True
 random_order = True
+search_engine = "https://jisho.org/search/"
 
 # messages for each event
 message_correct = "Correct!"
@@ -21,6 +24,7 @@ message_options_on_wrong = """ Options are:
 +\tmark as correct
 -\tmark as wrong 
 0\treveal answer
+j\tsearch in jisho.org
 x\texit"""
 
 if_word_is_roman_character_based = "in english"
@@ -78,7 +82,7 @@ typos.csv as the input set of words. Keep working on it until
 you have no typos left."""
 
 
-# check if user has supplied filename as argumen
+# check if user has supplied filename as argument
 # otherwise, ask for it
 if len(sys.argv) == 1:
     filename = input("Type the name of the file to open:")
@@ -118,8 +122,10 @@ for i in range(0,len(words)):
     advance = False
     while not advance:
         if re.match("^[a-zA-Z\s./-/']+$",words[i][1][0]): #check first meaning only
+            print("first") 
             user_answer = input(words[i][0]+" {0}: ".format(if_word_is_roman_character_based))
         else: 
+            print("second") 
             user_answer = input(words[i][0]+" {0}: ".format(if_word_is_not_roman_character_based))
         if user_answer == "": #skip a word by just not typing it
             if skip_enabled:
@@ -152,6 +158,12 @@ for i in range(0,len(words)):
                         advance = True
                     elif option == "0" or option == "０":
                         print(words[i][1])
+                        advance = False
+                    elif option == "j" or option == "J" or option == "じ":
+                        #print("opening {0} in {1}:".format(words[i][0], search_engine))
+                        #print(search_engine+words[i][0])
+                        #print(search_engine+urllib.parse.quote(words[i][0]))
+                        webbrowser.open(search_engine+urllib.parse.quote(words[i][0]))
                         advance = False
                     elif option =="x":
                         advance = True
