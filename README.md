@@ -40,8 +40,8 @@ Is a valid program. In fact, ``kaniwani`` will check the writing language used i
 Furthermore, you can add multiple meanings too, as long as they follow on the same line of the word and just are added each in their own entry (i.e., comma separated). For example, the ``words.csv`` file that we include as a demo for this program has multiple meanings on all lines:
 
 ```
-名前、na'me of a thing.m, a, a b 
-名前、まえ、ぜん
+前、in front, before 
+前、まえ、ぜん
 ```
 
 ## Options to invoke this program
