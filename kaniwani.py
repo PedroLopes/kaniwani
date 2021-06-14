@@ -13,6 +13,7 @@ skip_enabled = False
 produce_output_file_of_mistakes = True
 random_order = True
 search_engine = "https://jisho.org/search/"
+debug = False
 
 # messages for each event
 message_correct = "Correct!"
@@ -82,6 +83,14 @@ typos.csv as the input set of words. Keep working on it until
 you have no typos left."""
 
 
+#---------------------------------------------------------------
+
+def print_if_debug(*args,**kwargs):
+        if debug:
+            return print("DEBUG:\t",*args,**kwargs)
+        else:
+            pass
+
 # check if user has supplied filename as argument
 # otherwise, ask for it
 if len(sys.argv) == 1:
@@ -112,18 +121,20 @@ print("==== Start ====")
 if random_order:
     random.shuffle(words)
 
+print_if_debug("shuffle done")
+
 exit = False
 # ask each word once
 for i in range(0,len(words)):
-    # print("{0} out of {1}".format(i+1, len(words)))
+    print_if_debug("{0} out of {1}".format(i+1, len(words)))
     if exit:
-        print("STOP")
+        print("==== Stop ====")
         break
     advance = False
     while not advance:
 
         if words[i][1][0] == '': 
-            # print("empty for kanji!")
+            print_if_debug("empty for kanji!")
             user_answer = input(words[i][0]+" {0}: ".format(if_word_is_empty_draw_its_kanji))
         
         else:
@@ -168,10 +179,10 @@ for i in range(0,len(words)):
                         print(words[i][1])
                         advance = False
                     elif option == "j" or option == "J" or option == "じ":
-                        #print("opening {0} in {1}:".format(words[i][0], search_engine))
-                        #print(search_engine+words[i][0])
-                        #print(search_engine+urllib.parse.quote(words[i][0]))
-                        webbrowser.open(search_engine+urllib.parse.quote(words[i][0]))
+                        if words[i][1][0] == '': 
+                            webbrowser.open(search_engine+urllib.parse.quote((words[i][1])[1])+"%23kanji")
+                        else: 
+                            webbrowser.open(search_engine+urllib.parse.quote(words[i][0])+"%23kanji")
                         advance = False
                     elif option =="x":
                         advance = True
