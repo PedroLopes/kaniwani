@@ -3,7 +3,14 @@ import re
 import random
 from datetime import datetime
 import urllib.parse
+import urllib.request
 import webbrowser
+
+# using jisho (.org) as a dictionary for lookups
+from jisho_api.word import Word
+from jisho_api.kanji import Kanji
+from jisho_api.sentence import Sentence
+from jisho_api.tokenize import Tokens
 
 # options
 silence_correct_answers = True
@@ -25,7 +32,8 @@ message_options_on_wrong = """ Options are:
 +\tmark as correct
 -\tmark as wrong 
 0\treveal answer
-j\tsearch in jisho.org
+j\tsearch in jisho.org (display here)
+b\tsearch in jisho.org (display browser)
 x\texit"""
 
 if_word_is_roman_character_based = "in english"
@@ -85,6 +93,13 @@ you have no typos left."""
 
 #---------------------------------------------------------------
 
+def test_internet(host='http://jisho.org/'):
+    try:
+        urllib.request.urlopen(host) 
+        return True
+    except:
+        return False
+
 def print_if_debug(*args,**kwargs):
         if debug:
             return print("DEBUG:\t",*args,**kwargs)
@@ -103,6 +118,9 @@ else:
         filename = sys.argv[2]
     else:
         filename = sys.argv[1]
+
+print("Note: ", end='')
+print( "jisho.org is available for online dictionary lookups"  if test_internet() else " jisho.org is not available for online dictionary lookups (cause: likely your internet connection is not available or jisho itself is not available)" )
 
 # load words from file
 words = []
@@ -180,10 +198,20 @@ for i in range(0,len(words)):
                         advance = False
                     elif option == "j" or option == "J" or option == "じ":
                         if words[i][1][0] == '': 
+                            #webbrowser.open(search_engine+urllib.parse.quote((words[i][1])[1])+"%23kanji")
+                            r = Kanji.request((words[i][1])[1])
+                        else: 
+                            #webbrowser.open(search_engine+urllib.parse.quote(words[i][0])+"%23kanji")
+                            r = Kanji.request(words[i][0])
+                        r.rich_print()
+                        advance = False
+                    elif option == "b" or option == "B" or option == "ぶ":
+                        if words[i][1][0] == '': 
                             webbrowser.open(search_engine+urllib.parse.quote((words[i][1])[1])+"%23kanji")
                         else: 
                             webbrowser.open(search_engine+urllib.parse.quote(words[i][0])+"%23kanji")
                         advance = False
+
                     elif option =="x":
                         advance = True
                         exit = True

@@ -75,3 +75,6 @@ This section is maybe only for me, but perhaps you are also studying using this 
 1. to duplicate every line of text (useful when editing the .csv files to create the translations/meanings) you can use ``:g/^/norm yyp``
 2. to center your text in a big screen/etc (useful whe looking at or editing the csv in vi) you can, from a visual selection (``V``and select), run ``:center``
 
+## Installing using requirements.txt
+
+Yes, you can install via requirements.txt using the traditional ``pip install -r requirements.txt`` in your virtual environment. Note that if you find that libraries were still missing after this step, please let us know by filing a Github request/issue. 
